@@ -1,0 +1,6 @@
+{
+  "name": "ScaleFlow",
+  "description": "A premium, dark SaaS application foundation with custom layouts, responsive navigation, and scalable modular structures.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
