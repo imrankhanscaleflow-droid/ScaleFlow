@@ -418,7 +418,7 @@ export function GoogleCalendarDiagnosticModal({ isOpen, onClose }: DiagnosticMod
                       </div>
 
                       {/* Response Section */}
-                      <div className="space-y-1 pt-2">
+<div className="space-y-1 pt-2">
                         <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
                           RESPONSE INCOMING PAYLOAD:
                         </span>
