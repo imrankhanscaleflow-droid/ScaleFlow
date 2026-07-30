@@ -417,4 +417,4 @@ export function GoogleCalendarDiagnosticModal({ isOpen, onClose }: DiagnosticMod
                         </div>
                       </div>
 
-                      {/* Response Section
+                      {/* Response Section */}
