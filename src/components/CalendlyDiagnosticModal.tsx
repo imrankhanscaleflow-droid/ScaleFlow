@@ -183,7 +183,7 @@ export function CalendlyDiagnosticModal({ isOpen, onClose }: CalendlyDiagnosticM
             <button
               onClick={handleVerify}
               disabled={isVerifying}
-              className="px-3 py-1.5 bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/20 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1.5"
+              className="px-3 py-1.5 bg-brand-500/10 hover:bg-brand-500/20 text-brand-300 border border-brand-500/20 text-xs font-semibold rounded-lg transition-colors cursor-pointer flex items-center gap-1"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isVerifying ? 'animate-spin' : ''}`} />
               Test Connection
@@ -325,7 +325,7 @@ export function CalendlyDiagnosticModal({ isOpen, onClose }: CalendlyDiagnosticM
                   <Zap className="w-4 h-4 text-brand-400" /> How ScaleFlow Calendly Integration Works
                 </h4>
                 <p className="leading-relaxed text-gray-400">
-                  When a prospective lead interacts with the AI Voice Receptionist or Chat Agent and requests an appointment, the AI verifies the connected Calendly integration. The AI collects the customer&apos;s name, email, phone number, preferred date, and preferred time, creates the appointment on Calendly, pre-populates the customer scheduling link, and automatically saves the qualified lead to your ScaleFlow pipeline and dashboard.
+                  When a prospective lead interacts with the AI Voice Receptionist or Chat Agent and requests an appointment, the AI verifies the connected Calendly integration. The AI collects the lead information, confirms availability, and creates the booking on Calendly. A 2-way sync keeps leads synchronized between Calendly and your ScaleFlow pipeline.
                 </p>
               </div>
 
@@ -348,7 +348,7 @@ export function CalendlyDiagnosticModal({ isOpen, onClose }: CalendlyDiagnosticM
                   <button
                     onClick={handleRunAutomatedTest}
                     disabled={isRunningTestSuite}
-                    className="px-4 py-2 bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-lg shadow-brand-600/20 transition-all cursor-pointer flex items-center gap-2 self-start sm:self-auto shrink-0"
+                    className="px-4 py-2 bg-brand-600 hover:bg-brand-500 disabled:opacity-50 text-white font-semibold text-xs rounded-xl shadow-lg shadow-brand-600/20 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap"
                   >
                     <Play className={`w-3.5 h-3.5 ${isRunningTestSuite ? 'animate-spin' : ''}`} />
                     {isRunningTestSuite ? 'Running Verification...' : 'Run Automated System Test'}
@@ -423,6 +423,207 @@ export function CalendlyDiagnosticModal({ isOpen, onClose }: CalendlyDiagnosticM
                       type="text"
                       value={testName}
                       onChange={(e) => setTestName(e.target.value)}
-                      className="w-full px-3 py-2 bg-[#05060a] border border-[#1c1d2e] rounded-lg text-white"
+                      className="w-full px-3 py-2 bg-[#05060a] border border-[#1c1d2e] rounded-lg text-white placeholder-gray-600 focus:border-brand-500 outline-none transition-colors"
+                      placeholder="John Doe"
                       required
-                    
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      value={testEmail}
+                      onChange={(e) => setTestEmail(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#05060a] border border-[#1c1d2e] rounded-lg text-white placeholder-gray-600 focus:border-brand-500 outline-none transition-colors"
+                      placeholder="john@example.com"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      value={testPhone}
+                      onChange={(e) => setTestPhone(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#05060a] border border-[#1c1d2e] rounded-lg text-white placeholder-gray-600 focus:border-brand-500 outline-none transition-colors"
+                      placeholder="+1 (555) 000-0000"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                      Date
+                    </label>
+                    <input
+                      type="date"
+                      value={testDate}
+                      onChange={(e) => setTestDate(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#05060a] border border-[#1c1d2e] rounded-lg text-white placeholder-gray-600 focus:border-brand-500 outline-none transition-colors"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                      Time
+                    </label>
+                    <input
+                      type="time"
+                      value={testTime}
+                      onChange={(e) => setTestTime(e.target.value)}
+                      className="w-full px-3 py-2 bg-[#05060a] border border-[#1c1d2e] rounded-lg text-white placeholder-gray-600 focus:border-brand-500 outline-none transition-colors"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex items-end">
+                    <button
+                      type="submit"
+                      disabled={isBooking}
+                      className="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      {isBooking ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                      {isBooking ? 'Creating Booking...' : 'Create Test Booking'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* LOGS TAB */}
+          {activeTab === 'logs' && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold text-white font-display flex items-center gap-2">
+                  <Terminal className="w-4 h-4 text-brand-400" /> API Call Audit Trail
+                </h4>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setConfig(getCalendlyConfig());
+                      setLogs(getCalendlyLogs());
+                    }}
+                    className="px-2.5 py-1 bg-[#1a1a2e] hover:bg-[#25253e] text-gray-300 text-[11px] font-medium rounded-lg border border-[#2a2a40] transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    <RefreshCw className="w-3 h-3" /> Refresh
+                  </button>
+                  {logs.length > 0 && (
+                    <button
+                      onClick={handleClearLogs}
+                      className="px-2.5 py-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-[11px] font-medium rounded-lg border border-red-500/20 transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 className="w-3 h-3" /> Clear Logs
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {logs.length === 0 ? (
+                <div className="bg-[#12121e] border border-[#1d1d2e] rounded-xl p-8 text-center space-y-2">
+                  <Terminal className="w-6 h-6 text-gray-600 mx-auto" />
+                  <p className="text-xs text-gray-400">No Calendly API logs recorded yet.</p>
+                  <p className="text-[11px] text-gray-500">Run a test or create a booking to capture live logs.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  
+                  {/* Log List */}
+                  <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
+                    {logs.map((log) => {
+                      const isSelected = selectedLog?.id === log.id;
+                      return (
+                        <div
+                          key={log.id}
+                          onClick={() => setSelectedLog(log)}
+                          className={`p-3 rounded-xl border text-xs cursor-pointer transition-all space-y-1.5 ${
+                            isSelected
+                              ? 'bg-brand-500/10 border-brand-500/40 ring-1 ring-brand-500/30'
+                              : 'bg-[#10101c] border-[#1d1d2e] hover:border-[#2d2d42]'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className={`font-mono text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                              log.success ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
+                            }`}>
+                              {log.success ? 'SUCCESS' : 'FAILED'}
+                            </span>
+                            <span className="text-[10px] font-mono text-gray-500">
+                              {new Date(log.timestamp).toLocaleTimeString()}
+                            </span>
+                          </div>
+
+                          <div className="text-[11px] font-mono font-bold text-white">
+                            {log.type}
+                          </div>
+
+                          {log.error && (
+                            <p className="text-[10px] font-mono text-red-400 truncate">
+                              {log.error}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Log Detail Inspector */}
+                  <div className="bg-[#08080f] border border-[#1d1d2e] rounded-xl p-4 space-y-3 max-h-[400px] overflow-y-auto">
+                    {selectedLog ? (
+                      <div className="space-y-3 text-xs font-mono">
+                        <div className="border-b border-[#1d1d2e] pb-2">
+                          <span className="text-brand-300 font-bold">{selectedLog.type}</span>
+                        </div>
+
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Request:</span>
+                          <div className="p-2.5 bg-[#0e0e17] border border-[#1a1a2a] rounded text-[11px] text-gray-300 space-y-1">
+                            <div>URL: {selectedLog.request?.url || 'N/A'}</div>
+                            <div>Method: {selectedLog.request?.method || 'N/A'}</div>
+                          </div>
+                        </div>
+
+                        {selectedLog.error && (
+                          <div className="p-2.5 bg-red-500/10 border border-red-500/20 text-red-300 text-[11px] rounded">
+                            <span className="font-bold block mb-1">Error:</span>
+                            {selectedLog.error}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="h-full flex items-center justify-center text-center text-gray-500 text-xs">
+                        Click a log to inspect details
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+        </div>
+
+        {/* Modal Footer */}
+        <div className="px-6 py-3 border-t border-[#1e1e30] bg-[#0e0f1a] flex items-center justify-between">
+          <span className="text-[10px] font-mono text-gray-500">
+            ScaleFlow Calendly Integration Hub v2.0
+          </span>
+          <button
+            onClick={onClose}
+            className="px-4 py-1.5 bg-[#1e1e2e] hover:bg-[#28283d] text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+          >
+            Close Diagnostics
+          </button>
+        </div>
+
+      </div>
+    </div>
+  );
+}
